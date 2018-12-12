@@ -5,6 +5,7 @@ export const proxy = axios.create({
 })
 
 export function getConfig() {
+        console.log('node env', process.env.NODE_ENV)
         return { headers: {'auth': sessionStorage.getItem('token') } }
 }
 
