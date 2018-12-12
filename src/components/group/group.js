@@ -37,9 +37,9 @@ class GroupComponent extends Component {
                                 <Grid.Column textAlign='right' >
                                 {   editable && 
                                     <div>
-                                        <Button icon='pencil' size='mini' circular
+                                        <Button icon='pencil' size='mini' circular color='yellow'
                                             onClick={this.onEdit}/>
-                                        <Button icon='delete' size='mini' circular color='yellow' 
+                                        <Button icon='delete' size='mini' circular 
                                             loading = {this.props.loading === id}
                                             onClick={this.onDelete} />
                                     </div>

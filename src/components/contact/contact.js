@@ -35,9 +35,9 @@ class ContactComponent extends Component {
                                 </Grid.Column>
                                 <Grid.Column textAlign='right'>
                                     <div>
-                                        <Button icon='pencil' size='mini' circular 
+                                        <Button icon='pencil' size='mini' circular color='yellow'
                                             onClick={this.onEdit} />
-                                        <Button icon='delete' size='mini' circular color='yellow'
+                                        <Button icon='delete' size='mini' circular 
                                             onClick={this.onDelete} />
                                     </div>
                                 </Grid.Column>
