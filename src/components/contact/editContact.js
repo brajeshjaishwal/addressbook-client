@@ -17,10 +17,10 @@ class EditContactComponent extends Component {
 
         this.state = {
             id: this.props.match.params.id,
-            name: contact.name,
-            job: contact.job,
-            phone: contact.phone,
-            email: contact.email,
+            name: contact.name || '',
+            job: contact.job || '',
+            phone: contact.phone || '',
+            email: contact.email || '',
             group: contact.group ,
             groupname: contact.groupname,
             groupoptions: [],

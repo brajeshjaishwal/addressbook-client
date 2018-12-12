@@ -28,22 +28,18 @@ class GroupComponent extends Component {
                     <Card.Content>
                         <Grid columns={2}>
                             <Grid.Row >
-                                <Grid.Column width='11'>
+                                <Grid.Column textAlign='left'>
                                     <div >
                                         <Link name={id} to={`/dashboard/${id}`} onClick={this.onSelect}>{name}</Link>
-                                        <Label circular style={{marginLeft:'1em'}} >{total}</Label>
-                                        {//don't show it when all contacts are selected
-                                        editable && 
-                                        <Label circular empty style={{marginLeft:'0.5em'}} color={ active ? 'green' : 'grey' } />
-                                        }
+                                        <Label circular size='mini' color={ active ? 'green' : 'grey' } style={{marginLeft:'0.5em'}} >{total}</Label>
                                     </div>
                                 </Grid.Column>
-                                <Grid.Column width='5' >
+                                <Grid.Column textAlign='right' >
                                 {   editable && 
                                     <div>
-                                        <Button icon='pencil' size='tiny' circular
+                                        <Button icon='pencil' size='mini' circular
                                             onClick={this.onEdit}/>
-                                        <Button icon='delete' size='tiny' circular color='yellow' 
+                                        <Button icon='delete' size='mini' circular color='yellow' 
                                             loading = {this.props.loading === id}
                                             onClick={this.onDelete} />
                                     </div>

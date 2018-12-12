@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const proxy = axios.create({
-    baseURL: (process.env.NODE_ENV === 'DEV' ? 'http://localhost:3300/': 'https://addressbook2-server.herokuapp.com/')
+    baseURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:3300/': 'https://addressbook2-server.herokuapp.com/')
 })
 
 export function getConfig() {

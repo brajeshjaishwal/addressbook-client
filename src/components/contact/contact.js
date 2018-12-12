@@ -22,22 +22,22 @@ class ContactComponent extends Component {
                     <Card.Content>
                         <Card.Header >
                             {name}
-                            <Label circular empty 
+                            <Label circular size='mini'
                                 color={active ? 'green' : 'grey'} 
-                                style={{marginLeft:'0.5em'}}/>
+                                style={{marginLeft:'0.5em'}} content={job}/>
                         </Card.Header>
                         <Grid columns={2} >
                             <Grid.Row>
-                                <Grid.Column width='13'>
-                                    <div>{job}</div>
+                                <Grid.Column textAlign='left'>
+                                    
                                     <div>{email}</div>
                                     <div>{phone}</div>
                                 </Grid.Column>
-                                <Grid.Column width='3'>
+                                <Grid.Column textAlign='right'>
                                     <div>
-                                        <Button icon='pencil' size='tiny' circular 
+                                        <Button icon='pencil' size='mini' circular 
                                             onClick={this.onEdit} />
-                                        <Button icon='delete' size='tiny' circular color='yellow'
+                                        <Button icon='delete' size='mini' circular color='yellow'
                                             onClick={this.onDelete} />
                                     </div>
                                 </Grid.Column>
