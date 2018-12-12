@@ -9,7 +9,7 @@ class ContactComponent extends Component {
         this.props.history.push({
             pathname: `/editcontact/${this.props.contact._id}`,
             state: { data: this.props.contact}
-          })
+        })
     }
     onDelete = event => {
         event.preventDefault()

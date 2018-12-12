@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Input, Button, Modal, Divider, Checkbox, Header, Select } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import validator from 'validator'
 import { addContactAction, editContactAction } from '../../actions/contact';
 
 class EditContactComponent extends Component {
@@ -9,16 +10,19 @@ class EditContactComponent extends Component {
         super(props)
         let contact = {} 
         if(this.props.match.params.id) {
-            contact = this.props.location.state.data
+            contact = { ...this.props.location.state.data}
+            //trim domain from email
+            contact.email = contact.email.replace(this.props.domain, '')
         }
 
         this.state = {
             id: this.props.match.params.id,
-            name: contact.name || '',
-            job: contact.job || '',
-            phone: contact.phone || '',
-            email: contact.email || '',
-            group: contact.group || '',
+            name: contact.name,
+            job: contact.job,
+            phone: contact.phone,
+            email: contact.email,
+            group: contact.group ,
+            groupname: contact.groupname,
             groupoptions: [],
             active: contact.active || true,
             open: true,
@@ -36,7 +40,7 @@ class EditContactComponent extends Component {
             })
             if(this.state.id) {
                 //we are editing existing contact
-                defaultGroup = this.state.group
+                defaultGroup = this.state.groupname
             } else {
                 defaultGroup = options[0].text
             }
@@ -53,14 +57,34 @@ class EditContactComponent extends Component {
     }
 
     onChangeHandler = (e) => {
-        this.setState({[e.target.name]: e.target.value})
+        let tempValue = e.target.value
+        this.setState({[e.target.name]: tempValue})
+        if(e.target.name === 'email') {
+            let tempEmail = tempValue + this.props.domain
+            let error = ''
+            if(tempValue && !validator.isEmail(tempEmail)) {
+                error = 'Email not valid'
+            }
+            this.setState({emailError: error})
+        } else if(e.target.name === 'phone') {
+            let error = ''
+            if(tempValue && (!validator.isNumeric(tempValue) || tempValue.length < 10)) {
+                error = 'phone number not valid'
+            }
+            this.setState({phoneError: error})
+        } else if(e.target.name === 'name') {
+            let error = ''
+            if(tempValue === null || tempValue === undefined || tempValue === '') {
+                error = 'name is required field'
+            }
+            this.setState({nameError: error})
+        }
     }
 
     onSubmitHandler = async (event) => {
         event.preventDefault()
         this.setState({open: false})
         let { id, name, phone, email, job, group, active, groupoptions } = this.state
-        console.log('on edit submit', this.state)
         let groupid = groupoptions.find(o => o.text === group).key
         this.state.id ? 
             await this.props.editContact({id, name, phone, email, job, group: groupid, active}) :
@@ -87,22 +111,30 @@ class EditContactComponent extends Component {
                     <Input name="name" fluid placeholder='Enter name' style={{marginTop: '0.5em'}}
                         value = {this.state.name}
                         onChange={this.onChangeHandler} icon='user' iconPosition='left' />
+                    { this.state.nameError && <span style={{color:'red'}}>{this.state.nameError}</span>}
+
                     <Input name="email" fluid placeholder='Enter email' style={{marginTop: '0.5em'}}
                         value = {this.state.email}
                         onChange={this.onChangeHandler} icon='at' iconPosition='left' 
                         label='@inmar.com' labelPosition='right' />
+                    { this.state.emailError && <span style={{color:'red'}}>{this.state.emailError}</span>}                        
                     <Input name="phone" fluid placeholder='Enter phone' style={{marginTop: '0.5em'}}
                         value = {this.state.phone}
                         onChange={this.onChangeHandler} icon='phone' iconPosition='left' />
-                    <Input name="job" fluid placeholder='Enter job role' style={{marginTop: '0.5em'}}
+                    { this.state.phoneError && <span style={{color:'red'}}>{this.state.phoneError}</span>}
+
+                    {<Input name="job" fluid placeholder='Enter job role' style={{marginTop: '0.5em'}}
                         value = {this.state.job}
                         onChange={this.onChangeHandler} icon='info' iconPosition='left' />
+                    }
+
                     <Input fluid style={{marginTop:'0.5em'}} onChange={this.onChangeHandler}>
                         <Select name = 'group' compact fluid options={this.state.groupoptions || []} selection
                             value = { this.state.group }
                             onChange={event => this.onSelectionChange({name: 'group', value: event.target.textContent })} />
                         <Button disabled>Group</Button>
                     </Input>
+
                     {   
                         //display active/inactive checkbox when editing existing contact
                         this.state.id && 
@@ -132,6 +164,7 @@ class EditContactComponent extends Component {
 function mapStateToPrps(state) {
     console.log('editContact', state)
     return {
+        domain: state.auth.domain,
         contact: state.currentContact,
         groups: state.group.groups,
     }

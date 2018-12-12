@@ -59,7 +59,13 @@ class RegisterComponent extends Component {
                 error = 'phone number not valid'
             }
             this.setState({phoneError: error})
-        } 
+        } else if(e.target.name === 'name') {
+            let error = ''
+            if(tempValue === null || tempValue === undefined || tempValue === '') {
+                error = 'name is required field'
+            }
+            this.setState({nameError: error})
+        }
     }
 
     onSubmitHandler = async (event) => {
@@ -83,6 +89,7 @@ class RegisterComponent extends Component {
                 <Modal.Content>
                     <Input name="name" fluid placeholder='Enter name' style={{marginTop: '0.5em'}}
                         onChange={this.onChangeHandler} icon='user' ></Input>
+                    { this.state.nameError && <span style={{color:'red'}}>{this.state.nameError}</span>}
 
                     <Input name="email" fluid placeholder='Enter email' style={{marginTop: '0.5em'}}
                         onChange={this.onChangeHandler} label = '@inmar.com' labelPosition='right'></Input>

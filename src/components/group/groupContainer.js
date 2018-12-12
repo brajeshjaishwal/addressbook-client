@@ -33,8 +33,9 @@ class GroupContainerComponent extends Component {
 
     render () {
         let groups = []
-        let allcontacts = { id: '00000', name: 'All Contacts', total: 0, active: true }
+        let allcontacts = { id: '00000', name: 'All Contacts', active: true }
         groups.push(allcontacts)
+        allcontacts.total = 0
         this.props.groups.forEach(g => {
             allcontacts.total += g.total
             groups.push(g)
