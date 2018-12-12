@@ -1,11 +1,10 @@
 import axios from 'axios'
 
-export const proxy = axios.create({ 
-    baseURL: process.env.NODE_ENV === 'production' ? 'https://addressbook2-server.herokuapp.com/' : 'http://localhost:3300/'
-})
+let baseURL = process.env.SERVER  || 'http://localhost:3300/'
+console.log(baseURL)
+export const proxy = axios.create({ baseURL })
 
 export function getConfig() {
-        console.log('node env', process.env.NODE_ENV)
         return { headers: {'auth': sessionStorage.getItem('token') } }
 }
 
