@@ -1,14 +1,12 @@
 import axios from 'axios'
 
-export function proxy() {
-    let baseURL = process.env.SERVER  || 'http://localhost:3300/'
-    console.log('base url in api', baseURL)
-    console.log('node env', process.env.NODE_ENV)
-    axios.create({ baseURL })
-}
+console.log('server url', process.env.SERVER)
+export const proxy = axios.create({
+    baseURL: process.env.SERVER || 'http://localhost:3300/'
+})
 
 export function getConfig() {
-        return { headers: {'auth': sessionStorage.getItem('token') } }
+    return { headers: {'auth': sessionStorage.getItem('token') } }
 }
 
 export const handleError = error => {
