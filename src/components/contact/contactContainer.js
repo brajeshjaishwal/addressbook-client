@@ -11,7 +11,20 @@ class ContactContainerComponent extends Component {
         totalPages: 5,
         searchString: '',
         searchBy: 'name',
-        sortBy: 'name'
+        sortBy: 'name',
+        dosort: '',
+        dosearch: '',
+        sortOptions: [  { key: 'none', text: 'none', value: 'none' },
+                    { key: 'name', text: 'name', value: 'name' },
+                    { key: 'email', text: 'email', value: 'email' },],
+        searchOptions: [  { key: 'name', text: 'name', value: 'name' },
+                    { key: 'email', text: 'email', value: 'email' }, ],
+        pageSizeOptions: [
+                        { key: '3', text: '3', value: '3' },
+                        { key: '5', text: '5', value: '5' },
+                        { key: '10', text: '10', value: '10' },
+                        { key: '15', text: '15', value: '15' },
+                        { key: '20', text: '20', value: '20' }, ]
     }
 
     handlePaginationChange = (e, { activePage }) => {
@@ -19,20 +32,24 @@ class ContactContainerComponent extends Component {
     }
 
     onSearch = () => {
-
+        this.setState({dosearch: true})
     }
 
     onSort = () => {
-
+        this.setState({dosort: true})
     }
 
     onChangeHandler = e => {
         this.setState({[e.target.name]: e.target.value})
     }
 
+    onSelectionChange = (name, value) => {
+        this.setState({[name]: value})
+    }
     async componentDidMount() {
-        let selectedGroup = this.props.match.params.group || '00000'
-        await this.props.fetchAllGroups({groupid: selectedGroup})
+        console.log('component did mount - contact container')
+        let groupid = this.props.match.params.group || '00000'
+        await this.props.fetchAllGroups({groupid})
     }
     render() {
         let selectedGroup = this.props.selectedGroup// this.props.match.params.group || 'All Contacts'
@@ -42,16 +59,29 @@ class ContactContainerComponent extends Component {
             contactList = selectedGroup.contacts
             groupname = selectedGroup.name
         }
-        const options = [
-                            { key: 'name', text: 'name', value: 'name' },
-                            { key: 'email', text: 'email', value: 'email' },
-                            { key: 'phone', text: 'phone', value: 'phone' },
-        ]
-        const pageSizeOptions = [
-            { key: '10', text: '10', value: '10' },
-            { key: '15', text: '15', value: '15' },
-            { key: '20', text: '20', value: '20' },
-        ]
+        if(this.state.searchString && contactList !== null && contactList.length > 1) {
+            let ss = this.state.searchString.toUpperCase()
+            if(this.state.searchBy === 'name') {
+                contactList = contactList.filter(c => c.name.toUpperCase().includes(ss))
+            } else if(this.state.searchBy === 'email') {
+                contactList = contactList.filter(c => c.email.toUpperCase().includes(ss))
+            } 
+        }
+        if(this.state.sortBy !== 'none' && contactList !== null && contactList.length > 1) {
+            if(this.state.sortBy === 'name') {
+                contactList = contactList.sort(function(a, b){
+                    if(a.name < b.name) { return -1; }
+                    if(a.name > b.name) { return 1; }
+                    return 0;
+                })
+            } else if(this.state.sortBy === 'email') {
+                contactList = contactList.sort(function(a, b){
+                    if(a.email < b.email) { return -1; }
+                    if(a.email > b.email) { return 1; }
+                    return 0;
+                })
+            }
+        }
         return (
             <div>
                 <Segment>
@@ -63,20 +93,26 @@ class ContactContainerComponent extends Component {
                             </Header>
                         </Grid.Column>
                         <Grid.Column width={8}>
-                            <Input type='text' placeholder='Search contact ...'>
-                                <input />
-                                <Select compact options={options} defaultValue='name' />
-                                <Button icon='search' compact />
+                            <Input type='text' placeholder='Search ...'>
+                                <input name='searchString' onChange={this.onChangeHandler}/>
+                                <Select compact options={this.state.searchOptions} 
+                                    defaultValue='name' 
+                                    onChange={e => this.onSelectionChange('searchBy', e.target.textContent)}/>
+                                {
+                                //<Button icon='search' compact onClick={this.onSearch}/>
+                                }
                             </Input>
                         </Grid.Column>
                         <Grid.Column width={3} align='right'>
                             <Input >
-                                <Select compact options={options} defaultValue='name' />
-                                <Button compact icon='sort'/>
+                                <Select compact options={this.state.sortOptions} 
+                                    defaultValue='none' 
+                                    onChange={e => this.onSelectionChange('sortBy', e.target.textContent)}/>
+                                <Button compact icon='sort' onClick={this.onSort}/>
                             </Input>
                         </Grid.Column>
                     </Grid>
-                    {    contactList && 
+                    {   contactList && 
                         <List selection> 
                             { 
                                 contactList.map(c => <ContactComponent key={c.email} contact={c} {...this.props}/>)
@@ -94,7 +130,7 @@ class ContactContainerComponent extends Component {
                     <Input>
                         <Select name='pagesize' compact
                             style={{marginLeft:'1em'}} 
-                            options={pageSizeOptions} 
+                            options={this.state.pageSizeOptions} 
                             defaultValue='10' />
                         <Button disabled>Page Size</Button>
                     </Input>

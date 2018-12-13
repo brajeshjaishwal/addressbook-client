@@ -12,7 +12,6 @@ class GroupContainerComponent extends Component {
     }
     
     async componentDidMount() {
-        console.log('fetch all groups')
         await this.props.fetchAllGroups()
     }
 
