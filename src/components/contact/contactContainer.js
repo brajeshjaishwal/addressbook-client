@@ -19,6 +19,7 @@ class ContactContainerComponent extends Component {
                     { key: 'email', text: 'email', value: 'email' },],
         searchOptions: [  { key: 'name', text: 'name', value: 'name' },
                     { key: 'email', text: 'email', value: 'email' }, ],
+        defaultPageSize: 3,
         pageSizeOptions: [
                         { key: '3', text: '3', value: '3' },
                         { key: '5', text: '5', value: '5' },
@@ -131,7 +132,7 @@ class ContactContainerComponent extends Component {
                         <Select name='pagesize' compact
                             style={{marginLeft:'1em'}} 
                             options={this.state.pageSizeOptions} 
-                            defaultValue='10' />
+                            defaultValue={this.state.defaultPageSize} />
                         <Button disabled>Page Size</Button>
                     </Input>
                 </Segment>
