@@ -56,7 +56,7 @@ class ContactContainerComponent extends Component {
         let contactList = null
         let groupname = ''
         if(selectedGroup) {
-            contactList = selectedGroup.contacts
+            contactList = [...selectedGroup.contacts]
             groupname = selectedGroup.name
         }
         if(this.state.searchString && contactList !== null && contactList.length > 1) {
@@ -108,7 +108,7 @@ class ContactContainerComponent extends Component {
                                 <Select compact options={this.state.sortOptions} 
                                     defaultValue='none' 
                                     onChange={e => this.onSelectionChange('sortBy', e.target.textContent)}/>
-                                <Button compact icon='sort' onClick={this.onSort}/>
+                                <Button disabled compact icon='sort' onClick={this.onSort}/>
                             </Input>
                         </Grid.Column>
                     </Grid>
