@@ -106,6 +106,7 @@ class ContactContainerComponent extends Component {
 
 function mapStateToProps(state) {
     return {
+        deletedContact: state.contact.deletedContact,
         selectedGroup: state.group.selectedGroup,
         error: state.group.error
     }

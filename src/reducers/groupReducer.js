@@ -53,7 +53,6 @@ const groupReducer = (state = initialState, action) => {
             return { ...state, selectedGroup}
         
         case globals.FetchGroupList_Success:
-            
             let allGroups = {
                 id: '00000',
                 name: 'All Contacts',
@@ -69,6 +68,18 @@ const groupReducer = (state = initialState, action) => {
                 })
             }
             return { ...state, selectedGroup: allGroups, ...action.payload}
+        case globals.RemoveContactFromCachedItems:
+            //remove contact from cached collection
+            let { groupid, contactid } = action.payload
+            let tempGroup = state.groups.find(g => g.id === groupid)
+            tempGroup.contacts = tempGroup.contacts.filter(c => c._id !== contactid)
+            tempGroup.total -= 1
+            //remove contact from currently displayed contact list
+            let currentContacts = state.selectedGroup.contacts.filter(c => c._id !== contactid)
+            //console.log('filtered current contacts',currentContacts)
+            //state.selectedGroup.contacts = currentContacts
+            let groups = [...state.groups.filter(g => g.id !== groupid), tempGroup]
+            return { ...state, groups, selectedGroup: { contacts: currentContacts }, ...action.payload }
         default: 
             return { ...state }
     }

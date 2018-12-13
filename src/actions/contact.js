@@ -14,7 +14,7 @@ export const addContactAction = function ({ name, phone, email, job, group, acti
         try{
             let resp = await request
             let { contact, message } = await resp.data
-            console.log('addContactAction', contact)
+            //console.log('addContactAction', contact)
             if(contact === null) {
                 dispatch(addContactFailed(message))
             } else {
@@ -54,15 +54,15 @@ export const editContactAction = function ({ id, name, email, job, active, phone
     function editContactFailed(error) { return { type: EditContact_Failure, payload: { error, loading: false} }}
 }
 
-export const removeContactAction = function (id) {
+export const removeContactAction = function ({contactid}) {
     const config = getConfig();
-    const request = proxy.delete(`contacts/${id}`, config)
+    const request = proxy.delete(`contacts/${contactid}`, config)
     return async (dispatch) => {
-        dispatch(deleteContactStarted(id))
+        dispatch(deleteContactStarted(contactid))
         try{
             let resp = await request
             let { contact, message } = await resp.data
-            console.log('editContactAction', contact)
+            console.log('removeContactAction', contact)
             if(contact === null) {
                 dispatch(deleteContactFailed(message))
             } else {

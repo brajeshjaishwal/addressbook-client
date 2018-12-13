@@ -7,6 +7,8 @@ const constants = {
     RemoveGroup_Success: 'RemoveGroup_Success',
     RemoveGroup_Failure: 'RemoveGroup_Failure',
 
+    RemoveContactFromCachedItems: 'RemoveContactFromCachedItems',
+
     EditGroup: 'EditGroup',
     EditGroup_Success: 'EditGroup_Success',
     EditGroup_Failure: 'EditGroup_Failure',

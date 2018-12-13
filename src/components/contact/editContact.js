@@ -162,7 +162,7 @@ class EditContactComponent extends Component {
 }
 
 function mapStateToPrps(state) {
-    console.log('editContact', state)
+    //console.log('editContact', state)
     return {
         domain: state.auth.domain,
         contact: state.currentContact,

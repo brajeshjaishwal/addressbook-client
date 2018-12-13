@@ -12,6 +12,7 @@ class GroupContainerComponent extends Component {
     }
     
     async componentDidMount() {
+        console.log('fetch all groups')
         await this.props.fetchAllGroups()
     }
 
@@ -37,7 +38,7 @@ class GroupContainerComponent extends Component {
         groups.push(allcontacts)
         allcontacts.total = 0
         this.props.groups.forEach(g => {
-            allcontacts.total += g.total
+            allcontacts.total += g.contacts.length
             groups.push(g)
         })
 
@@ -77,6 +78,7 @@ class GroupContainerComponent extends Component {
 
 function mapStateToProps(state) {
     return {
+        deletedContact: state.contact.deletedContact,
         groups: state.group.groups,
         loading: state.group.loading === 'addgroup',
         error: state.group.error

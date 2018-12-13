@@ -20,6 +20,12 @@ const contactReducer = (state= initialState, action) => {
         case globals.RemoveContact:
         case globals.RemoveContact_Failure:
         case globals.RemoveContact_Success:
+            //console.log('contact reducer for remove contact', action.payload)
+            return  { ...state, 
+                        deletedContact: action.payload.contact, 
+                        loading: action.payload.loading, 
+                        error: action.payload.error
+                    }
         case globals.FetchContact_Success:
         case globals.FetchContact:
         case globals.FetchContact_Failure:

@@ -4,7 +4,7 @@ import { proxy, handleError, getConfig } from '../api/api'
 const { AddGroup, AddGroup_Success, AddGroup_Failure,
         FetchCachedGroup, FetchCachedGroupNames, FetchCachedGroupItems,
         FetchGroupList, FetchGroupList_Success, FetchGroupList_Failure,
-        RemoveGroup, RemoveGroup_Success, RemoveGroup_Failure,
+        RemoveGroup, RemoveGroup_Success, RemoveGroup_Failure,RemoveContactFromCachedItems,
         EditGroup, EditGroup_Success, EditGroup_Failure } = constants
 
 export const addGroupAction = function ({ name }) {
@@ -120,5 +120,12 @@ export const fetchCachedGroupNamesAction = function () {
     return {
         type: FetchCachedGroupNames,
         payload: { }
+    }
+}
+
+export const removeContactFromCachedItems = function({groupid, contactid}) {
+    return {
+        type: RemoveContactFromCachedItems,
+        payload: { groupid, contactid }
     }
 }
