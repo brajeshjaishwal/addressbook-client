@@ -76,7 +76,7 @@ class RegisterComponent extends Component {
             alert('please correct all entries.')
             return
         }
-        this.setState({open: false})
+        //this.setState({open: false})
         let {name, email, phone, password} = this.state
         await this.props.registerUser({name, email, phone, password,})
     }

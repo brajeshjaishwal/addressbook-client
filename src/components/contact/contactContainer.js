@@ -19,7 +19,7 @@ class ContactContainerComponent extends Component {
                     { key: 'email', text: 'email', value: 'email' },],
         searchOptions: [  { key: 'name', text: 'name', value: 'name' },
                     { key: 'email', text: 'email', value: 'email' }, ],
-        defaultPageSize: 3,
+        pagesize: '3',
         pageSizeOptions: [
                         { key: '3', text: '3', value: '3' },
                         { key: '5', text: '5', value: '5' },
@@ -29,6 +29,7 @@ class ContactContainerComponent extends Component {
     }
 
     handlePaginationChange = (e, { activePage }) => {
+        console.log('active page', activePage)
         this.setState({ activePage })
     }
 
@@ -56,6 +57,7 @@ class ContactContainerComponent extends Component {
         let selectedGroup = this.props.selectedGroup// this.props.match.params.group || 'All Contacts'
         let contactList = null
         let groupname = ''
+        let pageCount = 1
         if(selectedGroup) {
             contactList = [...selectedGroup.contacts]
             groupname = selectedGroup.name
@@ -82,6 +84,20 @@ class ContactContainerComponent extends Component {
                     return 0;
                 })
             }
+        }
+        if(contactList) {
+            let ps = parseInt(this.state.pagesize)
+            let totalPages = Math.ceil(contactList.length / ps)
+            if(contactList.length > totalPages * ps)
+            {
+                //we will need one more page
+                totalPages += 1
+            }
+            pageCount = totalPages
+            let pn = this.state.activePage
+            let startIndex = (pn - 1) * ps
+            let endIndex = pn * ps
+            contactList = contactList.slice(startIndex, endIndex)
         }
         return (
             <div>
@@ -126,13 +142,14 @@ class ContactContainerComponent extends Component {
                     <Pagination pointing secondary
                         activePage={this.state.activePage}
                         onPageChange={this.handlePaginationChange}
-                        totalPages={this.state.totalPages}
+                        totalPages={pageCount}
                     />
                     <Input>
                         <Select name='pagesize' compact
                             style={{marginLeft:'1em'}} 
                             options={this.state.pageSizeOptions} 
-                            defaultValue={this.state.defaultPageSize} />
+                            defaultValue={this.state.pagesize}
+                            onChange={e => this.onSelectionChange('pagesize', e.target.textContent)}/>
                         <Button disabled>Page Size</Button>
                     </Input>
                 </Segment>
