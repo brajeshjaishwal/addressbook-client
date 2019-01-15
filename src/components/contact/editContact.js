@@ -24,7 +24,7 @@ class EditContactComponent extends Component {
             group: contact.group ,
             groupname: contact.groupname,
             groupoptions: [],
-            active: contact.active || true,
+            active: contact.active,
             open: true,
         }
     }
@@ -162,7 +162,7 @@ class EditContactComponent extends Component {
 }
 
 function mapStateToPrps(state) {
-    //console.log('editContact', state)
+    console.log('editContact', state)
     return {
         domain: state.auth.domain,
         contact: state.currentContact,
